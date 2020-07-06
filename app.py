@@ -20,29 +20,28 @@ class Item(db.Model):
     category=db.Column(db.String(100))
     first=db.Column(db.String(100))
     second=db.Column(db.String(100))
+    anno_first=db.Column(db.String(100))
+    anno_second=db.Column(db.String(100))
     dispute=db.Column(db.String(10))
     final=db.Column(db.String(100))    
-    def __init__(self, query, category, first, second, dispute, final):
-        self.query = query
+    def __init__(self, Query, category, first, second, dispute, final):
+        self.Query = Query
         self.category = category
         self.first = first
         self.second = second
         self.dispute = dispute
         self.final = final
-
 app.secret_key = "super secret key"
 @app.route('/', methods = ['GET', 'POST'])
 def home():
     if request.method == "POST":
         Query = request.form.get('Query')
-        query = Item.query
-
-        if Query:
-            query = query.filter(Item.Query == Query)
-        result = query.all()
-        if result == []:
-            flash('Not Found')
-        flash(result)
+        category = request.form.get('category')
+        first = request.form.get('first')
+        second = request.form.get('second')
+        anno_first = request.form.get('anno_first')
+        anno_second = request.form.get('anno_second')
+        query = Item.query    
     return render_template('home.html')
 if __name__ == '__main__':
     app.run(debug = True)

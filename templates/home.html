@@ -4,8 +4,9 @@
       <div class="card-body">
           <h3 class="card-title" style="text-align: center;">Search Query</h3>
         <form method = "POST" class = "needs-validation" novalidate>
-            <div class="form-group>
-              <label for="query">Enter Query</label>
+          <div class="form-row">  
+          <div class="form-group col-md-6">
+              <label for="Query">Enter Query</label>
               <input
                 type="text"
                 class="form-control"
@@ -13,8 +14,67 @@
                 id="Query"
               />
             </div>
-            <br>
-          <input type="submit" value = "Search" class="btn btn-outline-success"></input></form>
+            <div class="form-group col-md-6">
+              <label for="query">Category</label>
+              <input
+                type="text"
+                class="form-control"
+                name="category"
+                id="category"
+              />
+            </div>
+          </div>
+          <div class="form-row">  
+            <div class="form-group col-md-6">
+                <label for="first">Associate 1</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="first"
+                  id="first"
+                />
+              </div>
+              <div class="form-group col-md-6">
+                <label for="anno_first">Annotation 1</label>
+                <select class="form-control" id="annotation_first" name = "annotation_first">
+                    <option></option>
+                    <option>Perfect</option>
+                    <option>Complementary</option>
+                    <option>Other Related</option>
+                    <option>Irrelevant</option>
+                    <option>Implicit</option>
+                    <option>Supercategory</option>
+                    <option>Catch All</option>
+                    <option>Not Sold</option>
+                </select>
+              </div>              
+          </div>
+          <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="second">Associate 2</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="second"
+                  id="second"
+                />
+              </div>
+            <div class="form-group col-md-6">
+              <label for="anno_first">Annotation 2</label>
+              <select class="form-control" id="annotation_second" name = "annotation_second">
+                  <option></option>
+                  <option>Perfect</option>
+                  <option>Complementary</option>
+                  <option>Other Related</option>
+                  <option>Irrelevant</option>
+                  <option>Implicit</option>
+                  <option>Supercategory</option>
+                  <option>Catch All</option>
+                  <option>Not Sold</option>
+              </select>
+            </div>
+          </div>
+          <input type="submit" value = "Add" class="btn btn-outline-success"></input></form>
       </div>
     </div>
 </div>
