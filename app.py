@@ -41,7 +41,17 @@ def home():
         second = request.form.get('second')
         anno_first = request.form.get('anno_first')
         anno_second = request.form.get('anno_second')
-        query = Item.query    
+        query = Item.query
+        if Query:
+            query=query.filter(Item.Query == Query)
+        if category:
+            query=query.filter(Item.category == category)
+        result=query.all()
+        if result == []:
+            item = Item(query, category, first, second, " ", final)
+            db.session.add(item)
+            db.session.commit()
+            
     return render_template('home.html')
 if __name__ == '__main__':
     app.run(debug = True)
