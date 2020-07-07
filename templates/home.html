@@ -47,6 +47,9 @@
                     <option>Catch All</option>
                     <option>Not Sold</option>
                 </select>
+                <div id = "vanno_first" class="invalid-feedback" style="display: none;">
+                  Please fill the entry.
+                </div>
               </div>              
           </div>
           <div class="form-row">
@@ -72,10 +75,25 @@
                   <option>Catch All</option>
                   <option>Not Sold</option>
               </select>
+              <div id = "vanno_second" class="invalid-feedback" style="display: none;">
+                Please fill the entry.
+              </div>
             </div>
           </div>
           <input type="submit" value = "Add" class="btn btn-outline-success"></input></form>
       </div>
     </div>
 </div>
+<script>
+document.getElementById('first').addEventListener('focus', validate_first)
+document.getElementById('second').addEventListener('focus', validate_second)
+function validate_first(){
+  const first = document.getElementById('first')  
+  document.getElementById('vanno_first').style.display = 'block'  
+}
+function validate_second(){
+  const second = document.getElementById('second')
+  document.getElementById('vanno_second').style.display = 'block'
+}
+</script>
 {%endblock%}
