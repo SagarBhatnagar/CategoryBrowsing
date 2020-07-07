@@ -24,11 +24,13 @@ class Item(db.Model):
     anno_second=db.Column(db.String(100))
     dispute=db.Column(db.String(10))
     final=db.Column(db.String(100))    
-    def __init__(self, Query, category, first, second, dispute, final):
+    def __init__(self, Query, category, first, second, anno_first, anno_second, dispute, final):
         self.Query = Query
         self.category = category
         self.first = first
         self.second = second
+        self.anno_first = anno_first
+        self.anno_second = anno_second
         self.dispute = dispute
         self.final = final
 app.secret_key = "super secret key"
@@ -48,10 +50,34 @@ def home():
             query=query.filter(Item.category == category)
         result=query.all()
         if result == []:
-            item = Item(query, category, first, second, " ", final)
+            if anno_first and anno_second:
+                if anno_first == anno_second:
+                    dispute = "NO"
+                else:
+                    dispute = "YES"
+            item = Item(Query, category, first, second, anno_first, anno_second, dispute, " ")
             db.session.add(item)
             db.session.commit()
-            
+            flash('Added')
+        else:
+            result = result[0]
+            if first:
+                result.first = first
+            if second:
+                result.second = second
+            if anno_first:
+                result.anno_first = anno_first
+            if anno_second:
+                result.anno_second = anno_second
+            if anno_first and anno_second:
+                if anno_first == anno_second:
+                    result.dispute = "NO"
+                    db.session.commit()
+                else:
+                    result.dispute = "YES"
+                    db.session.commit()
+            db.session.commit()   
+        
     return render_template('home.html')
 if __name__ == '__main__':
     app.run(debug = True)
