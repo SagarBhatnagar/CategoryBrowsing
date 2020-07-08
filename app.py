@@ -14,6 +14,16 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #initialize database
 db = SQLAlchemy(app)
 
+class ItemTable(Table):
+    Query = Col('Query')
+    category = Col('Category')
+    first = Col('Associate 1')
+    second = Col('Associate 2')
+    anno_first = Col('Annotation 1')
+    anno_second = Col('Annotation 2')
+    dispute = Col('Dispute')
+    final = Col('Final')
+
 class Item(db.Model):
     id=db.Column(db.Integer, primary_key = True)
     Query=db.Column(db.String(100))
@@ -43,6 +53,7 @@ def home():
         second = request.form.get('second')
         anno_first = request.form.get('anno_first')
         anno_second = request.form.get('anno_second')
+        final = request.form.get('final')
         query = Item.query
         if Query:
             query=query.filter(Item.Query == Query)
@@ -55,7 +66,7 @@ def home():
                     dispute = "NO"
                 else:
                     dispute = "YES"
-            item = Item(Query, category, first, second, anno_first, anno_second, dispute, " ")
+            item = Item(Query, category, first, second, anno_first, anno_second, dispute, final)
             db.session.add(item)
             db.session.commit()
             flash('Added')
@@ -76,8 +87,29 @@ def home():
                 else:
                     result.dispute = "YES"
                     db.session.commit()
-            db.session.commit()   
+            if final:
+                result.final = final
+            flash('Added')
+            db.session.commit()  
         
     return render_template('home.html')
+
+@app.route('/search', methods = ["GET", "POST"])
+def search():
+    if request.method == "POST":
+        Query = request.form.get('Query')
+        category = request.form.get('category')
+        dispute = request.form.get('dispute')
+        query = Item.query
+        if Query:
+            query = query.filter(Item.Query == Query)
+        if category:
+            query = query.filter(Item.category == category)
+        if dispute:
+            query = query.filter(Item.dispute == dispute)    
+        result = query.all()
+        table = ItemTable(result)
+        return render_template('search_results.html', table=table)
+    return render_template('search.html')
 if __name__ == '__main__':
     app.run(debug = True)

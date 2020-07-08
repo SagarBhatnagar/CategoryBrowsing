@@ -1,0 +1,39 @@
+{%extends 'layout.html' %} {% block body %}
+<div class="container">
+    <div class="card">
+      <div class="card-body">
+          <h3 class="card-title" style="text-align: center;">Search</h3>
+        <form method = "POST" class = "needs-validation" novalidate>
+          <div class="form-row">  
+          <div class="form-group col-md-6">
+              <label for="Query">Enter Query</label>
+              <input
+                type="text"
+                class="form-control"
+                name="Query"
+                id="Query"
+              />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="query">Category</label>
+              <input
+                type="text"
+                class="form-control"
+                name="category"
+                id="category"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="dispute">Dispute</label>
+            <select class="form-control" id="dispute" name = "dispute">
+                <option></option>
+                <option>YES</option>
+                <option>NO</option>                
+            </select>
+          </div>                 
+          <input type="submit" value = "Search" class="btn btn-outline-secondary"></input></form>
+      </div>
+    </div>
+</div>
+{%endblock%}
