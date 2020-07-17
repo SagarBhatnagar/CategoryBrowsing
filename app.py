@@ -22,6 +22,7 @@ class ItemTable(Table):
     anno_first = Col('Annotation 1')
     anno_second = Col('Annotation 2')
     dispute = Col('Dispute')
+    name = Col('Judgement By')
     final = Col('Final')
 
 class Item(db.Model):
@@ -33,8 +34,9 @@ class Item(db.Model):
     anno_first=db.Column(db.String(100))
     anno_second=db.Column(db.String(100))
     dispute=db.Column(db.String(10))
+    name=db.Column(db.String(100))
     final=db.Column(db.String(100))    
-    def __init__(self, Query, category, first, second, anno_first, anno_second, dispute, final):
+    def __init__(self, Query, category, first, second, anno_first, anno_second, dispute, name, final):
         self.Query = Query
         self.category = category
         self.first = first
@@ -42,6 +44,7 @@ class Item(db.Model):
         self.anno_first = anno_first
         self.anno_second = anno_second
         self.dispute = dispute
+        self.name = name
         self.final = final
 app.secret_key = "super secret key"
 @app.route('/', methods = ['GET', 'POST'])
@@ -53,7 +56,9 @@ def home():
         second = request.form.get('second')
         anno_first = request.form.get('anno_first')
         anno_second = request.form.get('anno_second')
+        name = request.form.get('name')
         final = request.form.get('final')
+
         query = Item.query
         if Query:
             query=query.filter(Item.Query == Query)
@@ -61,35 +66,42 @@ def home():
             query=query.filter(Item.category == category)
         result=query.all()
         if result == []:
+            dispute = "YES"
             if anno_first and anno_second:
                 if anno_first == anno_second:
-                    dispute = "NO"
-                else:
-                    dispute = "YES"
-            item = Item(Query, category, first, second, anno_first, anno_second, dispute, final)
+                    dispute = "NO"                
+            item = Item(Query, category, first, second, anno_first, anno_second, dispute, name, final)
             db.session.add(item)
             db.session.commit()
             flash('Added')
         else:
             result = result[0]
-            if first:
+            flag = 0
+            if result.final:
+                flash('Already Judged')
+                flag = 1
+            else:
+                result.final = final
+            if first and not flag:
                 result.first = first
-            if second:
+            if second and not flag:
                 result.second = second
-            if anno_first:
+            if anno_first and not flag:
                 result.anno_first = anno_first
-            if anno_second:
+            if anno_second and not flag:
                 result.anno_second = anno_second
-            if anno_first and anno_second:
-                if anno_first == anno_second:
+            if result.anno_first and result.anno_second and not flag:
+                if result.anno_first == result.anno_second:
                     result.dispute = "NO"
                     db.session.commit()
                 else:
                     result.dispute = "YES"
                     db.session.commit()
-            if final:
-                result.final = final
-            flash('Added')
+            if name and not flag:
+                result.name = name
+            
+            if not flag:
+                flash('Added')
             db.session.commit()  
         
     return render_template('home.html')
