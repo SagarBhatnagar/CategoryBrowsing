@@ -24,13 +24,24 @@
               />
             </div>
           </div>
-          <div class="form-group">
-            <label for="dispute">Dispute</label>
-            <select class="form-control" id="dispute" name = "dispute">
-                <option></option>
-                <option>YES</option>
-                <option>NO</option>                
-            </select>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="dispute">Dispute</label>
+              <select class="form-control" id="dispute" name = "dispute">
+                  <option></option>
+                  <option>YES</option>
+                  <option>NO</option>                
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="batch">Batch Number</label>
+              <input
+                type="number"
+                class="form-control"
+                name="batch"
+                id="batch"
+              />
+            </div>
           </div>                 
           <input type="submit" value = "Search" class="btn btn-outline-secondary"></input></form>
       </div>

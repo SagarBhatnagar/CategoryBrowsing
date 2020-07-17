@@ -17,6 +17,7 @@ db = SQLAlchemy(app)
 class ItemTable(Table):
     Query = Col('Query')
     category = Col('Category')
+    batch = Col('Batch')
     first = Col('Associate 1')
     second = Col('Associate 2')
     anno_first = Col('Annotation 1')
@@ -29,6 +30,7 @@ class Item(db.Model):
     id=db.Column(db.Integer, primary_key = True)
     Query=db.Column(db.String(100))
     category=db.Column(db.String(100))
+    batch=db.Column(db.String(100))
     first=db.Column(db.String(100))
     second=db.Column(db.String(100))
     anno_first=db.Column(db.String(100))
@@ -36,9 +38,10 @@ class Item(db.Model):
     dispute=db.Column(db.String(10))
     name=db.Column(db.String(100))
     final=db.Column(db.String(100))    
-    def __init__(self, Query, category, first, second, anno_first, anno_second, dispute, name, final):
+    def __init__(self, Query, category, batch, first, second, anno_first, anno_second, dispute, name, final):
         self.Query = Query
         self.category = category
+        self.batch = batch
         self.first = first
         self.second = second
         self.anno_first = anno_first
@@ -52,6 +55,7 @@ def home():
     if request.method == "POST":
         Query = request.form.get('Query')
         category = request.form.get('category')
+        batch = request.form.get('batch')
         first = request.form.get('first')
         second = request.form.get('second')
         anno_first = request.form.get('anno_first')
@@ -70,7 +74,7 @@ def home():
             if anno_first and anno_second:
                 if anno_first == anno_second:
                     dispute = "NO"                
-            item = Item(Query, category, first, second, anno_first, anno_second, dispute, name, final)
+            item = Item(Query, category, batch, first, second, anno_first, anno_second, dispute, name, final)
             db.session.add(item)
             db.session.commit()
             flash('Added')
@@ -112,13 +116,16 @@ def search():
         Query = request.form.get('Query')
         category = request.form.get('category')
         dispute = request.form.get('dispute')
+        batch = request.form.get('batch')
         query = Item.query
         if Query:
             query = query.filter(Item.Query == Query)
         if category:
             query = query.filter(Item.category == category)
         if dispute:
-            query = query.filter(Item.dispute == dispute)    
+            query = query.filter(Item.dispute == dispute)
+        if batch:
+            query = query.filter(Item.batch == batch)    
         result = query.all()
         table = ItemTable(result)
         return render_template('search_results.html', table=table)

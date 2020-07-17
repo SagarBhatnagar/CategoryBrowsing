@@ -5,23 +5,32 @@
           <h3 class="card-title" style="text-align: center;">Category Browsing</h3>
         <form method = "POST" class = "needs-validation" novalidate>
           <div class="form-row">  
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
               <label for="Query">Enter Query</label>
               <input
                 type="text"
                 class="form-control"
                 name="Query"
                 id="Query"
-              />
+              required/>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="query">Category</label>
               <input
                 type="text"
                 class="form-control"
                 name="category"
                 id="category"
-              />
+              required/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="batch">Batch Number</label>
+              <input
+                type="number"
+                class="form-control"
+                name="batch"
+                id="batch"
+              required/>
             </div>
           </div>
           <div class="form-row">  
